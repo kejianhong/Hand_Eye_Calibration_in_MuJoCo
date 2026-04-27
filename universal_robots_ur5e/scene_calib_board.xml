@@ -1,0 +1,41 @@
+<mujoco model="scene_calib_board scene">
+  <include file="ur5e_calib_board.xml"/>
+
+  <statistic center="0.3 0 0.4" extent="0.8"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.1 0.1 0.1" specular="0.2 0.2 0.2"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="120" elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+    
+    <!-- 地板纹理 -->
+    <texture type="2d" name="groundplane" builtin="flat" mark="none" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+      markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <!-- 👇 补上这一行！ -->
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.0"/>
+    
+    <!-- 棋盘格 -->
+    <texture type="2d" name="charuco_tex" file="charuco_board.png" width="24" height="18"/>
+    <material name="charuco_mat" texture="charuco_tex" texrepeat="1 1" texuniform="false"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 10.5" dir="0 0 -1" directional="false"  diffuse="1 1 1" ambient="0.5 0.5 0.5"/>
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+    
+    <!-- 标定板 -->
+    <body name="calibration_board" pos="0.5 0.0 0.1" euler="0.0 0 0">
+      <geom name="calibration_board_geom" type="box" size="0.1280 0.096 0.0001" material="charuco_mat" contype="0" conaffinity="0"/>
+    </body>
+    <body name="wall" pos="0 0 1" euler="0 0 0">
+      <geom name="wall_px" type="box" margin="0.01" gap="0.005" pos="1.0 0.0 0.0" euler="0 0 1.5707963267948966" rgba="1 0 0 0.5" size="0.5 0.0001 1" contype="1" conaffinity="1"/>
+      <geom name="wall_nx" type="box" margin="0.01" gap="0.005" pos="-0.4 0.0 0.0" euler="0 0 1.5707963267948966" rgba="1 0 0 0.5" size="0.5 0.0001 1" contype="1" conaffinity="1"/>
+      <geom name="wall_py" type="box" margin="0.01" gap="0.005" pos="0.3 0.5 0.0" euler="0 0 0" rgba="1 0 0 0.5" size="0.7 0.0001 1" contype="1" conaffinity="1"/>
+      <geom name="wall_ny" type="box" margin="0.01" gap="0.005" pos="0.3 -0.5 0.0" euler="0 0 0" rgba="1 0 0 0.5" size="0.7 0.0001 1" contype="1" conaffinity="1"/>
+    </body>
+  </worldbody>
+</mujoco>
