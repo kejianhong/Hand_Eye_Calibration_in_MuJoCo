@@ -1,0 +1,7 @@
+[tool.isort]
+profile = "black"
+line_length = 65535
+
+[tool.black]
+target_version = ["py311"]
+line_length = 65535
